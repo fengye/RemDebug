@@ -1,0 +1,17 @@
+Overview
+
+RemDebug is a remote debugger for Lua 5.0 and 5.1. It lets you control the execution of another Lua program remotely, setting breakpoints and inspecting the current state of the program. RemDebug can also debug CGILua scripts.
+
+RemDebug is free software and uses the same license as Lua.
+
+Status
+
+The current version is RemDebug 1.0, released on July 27th, 2006. The only controller for this version is a very simple command-line one. Controllers integrated into environments such as Eclipse are planned for future versions.
+
+RemDebug follows the package model for Lua 5.1 (see section Installation for more details).
+
+NOTE: I've fixed an issue that path name contains spaces won't work in RemDebug, by fixing up the filename matching pattern.
+
+Dependencies
+
+RemDebug depends on LuaSocket 2.0, LuaFileSystem 1.2, and Compat-5.1 Release 5 (if you are using Lua 5.0).

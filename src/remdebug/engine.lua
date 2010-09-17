@@ -145,7 +145,7 @@ local function debugger_loop(server)
     local line, status = server:receive()
     command = string.sub(line, string.find(line, "^[A-Z]+"))
     if command == "SETB" then
-      local _, _, _, filename, line = string.find(line, "^([A-Z]+)%s+([%w%p]+)%s+(%d+)$")
+      local _, _, _, filename, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)$")
       if filename and line then
         set_breakpoint(filename, tonumber(line))
         server:send("200 OK\n")
@@ -153,7 +153,7 @@ local function debugger_loop(server)
         server:send("400 Bad Request\n")
       end
     elseif command == "DELB" then
-      local _, _, _, filename, line = string.find(line, "^([A-Z]+)%s+([%w%p]+)%s+(%d+)$")
+      local _, _, _, filename, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)$")
       if filename and line then
         remove_breakpoint(filename, tonumber(line))
         server:send("200 OK\n")

@@ -18,7 +18,7 @@ client:send("STEP\n")
 client:receive()
 
 local breakpoint = client:receive()
-local _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p]+)%s+(%d+)$")
+local _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p%s]+)%s+(%d+)$")
 if file and line then
   print("Paused at file " .. file )
   print("Type 'help' for commands")
@@ -30,6 +30,7 @@ else
   end
 end
 
+-- modify this basedir if you don't want to type a long path everytime you start remdebug
 local basedir = ""
 
 while true do
@@ -46,12 +47,12 @@ while true do
     end
     local _, _, status = string.find(breakpoint, "^(%d+)")
     if status == "202" then
-      local _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p]+)%s+(%d+)$")
+      local _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p%s]+)%s+(%d+)$")
       if file and line then 
         print("Paused at file " .. file .. " line " .. line)
       end
     elseif status == "203" then
-      local _, _, file, line, watch_idx = string.find(breakpoint, "^203 Paused%s+([%w%p]+)%s+(%d+)%s+(%d+)$")
+      local _, _, file, line, watch_idx = string.find(breakpoint, "^203 Paused%s+([%w%p%s]+)%s+(%d+)%s+(%d+)$")
       if file and line and watch_idx then
         print("Paused at file " .. file .. " line " .. line .. " (watch expression " .. watch_idx .. ": [" .. watches[watch_idx] .. "])")
       end
@@ -70,7 +71,7 @@ while true do
     client:close()
     os.exit()
   elseif command == "setb" then
-    local _, _, _, filename, line = string.find(line, "^([a-z]+)%s+([%w%p]+)%s+(%d+)$")
+    local _, _, _, filename, line = string.find(line, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)$")
     if filename and line then
       filename = basedir .. filename
       if not breakpoints[filename] then breakpoints[filename] = {} end
@@ -99,7 +100,7 @@ while true do
       print("Invalid command")
     end
   elseif command == "delb" then
-    local _, _, _, filename, line = string.find(line, "^([a-z]+)%s+([%w%p]+)%s+(%d+)$")
+    local _, _, _, filename, line = string.find(line, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)$")
     if filename and line then
       filename = basedir .. filename
       if not breakpoints[filename] then breakpoints[filename] = {} end
